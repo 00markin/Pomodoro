@@ -13,6 +13,7 @@ This project was bootstrapped with Expo
 1. `Clone this project`
 2. `cd pomodoro`
 3. `npm install`
+4. `expo install expo-font @expo-google-fonts/montserrat`
 
 ## Runnin The Project
 `npm start`
