@@ -1,6 +1,8 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { Dimensions, StyleSheet, TouchableOpacity } from "react-native";
 import { Texto } from "../Text";
+
+const screen = Dimensions.get("window");
 
 export default function Button({ children, onPress }) {
     return (
@@ -15,6 +17,11 @@ const styles = StyleSheet.create({
         backgroundColor: "#50285b",
         borderWidth: 5,
         borderColor: "#f5af26",
+        width: screen.width /2,
+        height: screen.height / 2,
+        borderRadius: screen.width / 2,
+        alignItems: "center",
+        justifyContent: "center",
     },
     text: {
         color: "#f5af26",
