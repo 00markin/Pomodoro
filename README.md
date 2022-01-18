@@ -6,9 +6,9 @@ This project was bootstrapped with Expo
 Do not use this version in Production, It's full of comments (Pt-Br) to be easier the evaluation.
 
 # Installation:
-Clone this project
-cd pomodoro
-npm install
+1. `Clone this project`
+2. `cd pomodoro`
+3. `npm install`
 
 # Runnin The Project
 npm start
