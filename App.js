@@ -3,8 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import { AppLoading } from 'expo-app-loading';
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
-import Button from '../src/components/Button';
-import Texto from '../src/components/Text';
+import Button from './src/components/Button';
+import Texto from './src/components/Text';
 
 export default function App() {
   //carregando fonte externa
@@ -20,7 +20,7 @@ export default function App() {
 
   //SafeAreaView para não ultrapassar o status bar
   return (
-    <SafeAreaView style={[{flex:1}, styles.container]}>
+    <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
       <Button onPress={() => null}>
         <Texto>Iniciar</Texto>
