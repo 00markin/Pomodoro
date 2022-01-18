@@ -1,14 +1,14 @@
 {
   "expo": {
     "name": "Pomodoro",
-    "slug": "Pomodoro",
+    "slug": "Pomodoro-timer",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#50285b"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
