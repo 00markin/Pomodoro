@@ -1,30 +1,28 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, SafeAreaView } from 'react-native';
-import { AppLoading } from 'expo-app-loading';
-import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
+import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
 import Button from './src/components/Button';
-import Texto from './src/components/Text';
+import AppLoading from 'expo-app-loading';
+import Texto from './src/components/Texto';
 
 export default function App() {
   //carregando fonte externa
-  let [fontsLoaded] = useFonts({
-    "RobotoRegular": Roboto_400Regular,
-    "RobotoBold": Roboto_700Bold,
+  const [fonteCarregada] = useFonts({
+    "MontserratRegular": Montserrat_400Regular,
+    "MontserratBold": Montserrat_700Bold
   });
 
   //se não carregou, mostra o loading
-  if (!fontsLoaded) {
+  if (!fonteCarregada) {
     return <AppLoading />;
   }
-
+  
   //SafeAreaView para não ultrapassar o status bar
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
-      <Button onPress={() => null}>
-        <Texto>Iniciar</Texto>
-      </Button>
+      <Button onPress={() => null}>Iniciar</Button>
     </SafeAreaView>
   );
 }
