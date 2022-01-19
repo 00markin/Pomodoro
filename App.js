@@ -6,6 +6,7 @@ import Button from './src/components/Button';
 import AppLoading from 'expo-app-loading';
 import Texto from './src/components/Texto';
 import Vibrate from './utils/Vibrate';
+import { Audio } from 'expo-av';
 
 const screen = Dimensions.get("window");
 
@@ -22,9 +23,27 @@ export default function App() {
   // estados inciais para o timer
   const [remainingTime, setRemainingTime] = useState(25);
   const [isActive, setIsActive] = useState(false);
-  const [newTime, setNewTime] = useState(0);
+  const [newTime, setNewTime] = useState(1);
   const [type, setType] = useState('Work');
+  const [startSound, setStartSound] = useState();
+  const [stopSound, setStopSound] = useState();
   const { mins, secs } = getRemainingTime(remainingTime);
+
+  async function playStartSound() {
+    const { startFx } = await Audio.Sound.createAsync(
+      require('./assets/StartFx.mp3')
+    );
+    setStartSound(startFx);
+    await startFx.playAsync();
+  }
+
+  async function playStopSound() {
+    const { stopFx } = await Audio.Sound.createAsync(
+      require('./assets/StopFx.mp3')
+    );
+    setStopSound(stopFx);
+    await stopFx.playAsync();
+  }
 
   // função para iniciar o timer
   const toggle = () => {
@@ -41,11 +60,12 @@ export default function App() {
   //função para parar o timer
   const stop = () => {
     setIsActive(false);
-    setRemainingTime(5);
+    setRemainingTime(0);
+    playStopSound();
   }
 
-
   // função para atualizar o tempo restante
+  // pare o timer quando o tempo chegar em 0
   useEffect(() => {
     let interval = null;
     if (isActive) {
@@ -54,6 +74,8 @@ export default function App() {
       }, 1000);
     } else if (!isActive && remainingTime !== 0) {
       clearInterval(interval);
+    } else if (!isActive && remainingTime === 0) {
+      stop();
     }
     return () => clearInterval(interval);
   }, [isActive, remainingTime]);
@@ -61,6 +83,24 @@ export default function App() {
   const keyboardHandler = () => {
     Keyboard.dismiss();
   }
+
+  //useEffect para o som de começo das atividades
+  useEffect(() => {
+    return startSound
+      ? () => {
+        startSound.unloadAsync();
+      }
+      : undefined;
+  }, [startSound]);
+
+  //useEffect para o som de fim das atividades
+  useEffect(() => {
+    return stopSound
+      ? () => {
+        stopSound.unloadAsync();
+      }
+      : undefined;
+  }, [stopSound]);
 
   //carregando fonte externa
   const [fonteCarregada] = useFonts({
@@ -77,9 +117,11 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
-      <View style={styles.timerContainer}>
-        <Button onPress={() => {setRemainingTime(newTime * 60); keyboardHandler()}}> Minutos </Button>
-        <Button onPress={() => {setRemainingTime(newTime); keyboardHandler()}}> Segundos </Button>
+      <View style={{ display: isActive ? 'none' : 'flex' }}>
+        <View style={styles.buttonView}>
+          <Button onPress={() => { setRemainingTime(parseInt(newTime) * 60); keyboardHandler() }}> Minutos </Button>
+          <Button onPress={() => { setRemainingTime(parseInt(newTime)); keyboardHandler() }}> Segundos </Button>
+        </View>
         <View style={styles.timePickerContainer}>
           <TextInput style={styles.input} keyboardType="number-pad" onChange={value => setNewTime(value)} />
         </View>
@@ -87,8 +129,8 @@ export default function App() {
       <Texto style={[styles.activity, { display: isActive ? 'flex' : 'none' }]}>{type}</Texto>
       <Texto style={styles.timer}>{`${mins}:${secs}`}</Texto>
       <View style={styles.buttonView}>
-        <Button onPress={toggle} style={{ color: isActive ? "#FF0000" : "#00FF00" }}>{isActive ? 'Pausar' : 'Iniciar'}</Button>
-        <Button onPress={reset}>Resetar</Button>
+        <Button onPress={() => { toggle(); isActive ? playStartSound() : playStopSound() }} style={{ color: isActive ? "#FF0000" : "#00FF00" }}>{isActive ? 'Pausar' : 'Iniciar'}</Button>
+        <Button onPress={() => { reset(); playStopSound() }}>Resetar</Button>
       </View>
     </SafeAreaView>
   );
@@ -136,6 +178,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 3,
     width: screen.width / 2,
+    margin: 10,
   },
   input: {
     width: "100%",
@@ -146,5 +189,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#50285b",
     lineHeight: 60,
     textAlign: "center",
+  },
+  timerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '100%',
   },
 });
