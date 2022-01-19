@@ -23,7 +23,7 @@ export default function App() {
   // estados inciais para o timer
   const [remainingTime, setRemainingTime] = useState(25);
   const [isActive, setIsActive] = useState(false);
-  const [newTime, setNewTime] = useState(1);
+  const [newTime, setNewTime] = useState(25);
   const [type, setType] = useState('Work');
   const [startSound, setStartSound] = useState();
   const [stopSound, setStopSound] = useState();
@@ -64,9 +64,26 @@ export default function App() {
     playStopSound();
   }
 
+  // função para mudar o tempo do timer
+  async function switchBetweenWorkAndRelax() {
+    if (type === 'Work') {
+      await playStopSound();
+      setType('Relax');
+      setRemainingTime(5);
+      await playStartSound();
+    } else {
+      await playStopSound();
+      setType('Work');
+      setRemainingTime(newTime);
+      await playStartSound();
+    }
+  }
+
   // função para atualizar o tempo restante
-  // pare o timer quando o tempo chegar em 0
   useEffect(() => {
+    if (remainingTime === 0) {
+      switchBetweenWorkAndRelax();
+    }
     let interval = null;
     if (isActive) {
       interval = setInterval(() => {
@@ -74,8 +91,6 @@ export default function App() {
       }, 1000);
     } else if (!isActive && remainingTime !== 0) {
       clearInterval(interval);
-    } else if (!isActive && remainingTime === 0) {
-      stop();
     }
     return () => clearInterval(interval);
   }, [isActive, remainingTime]);
@@ -119,18 +134,18 @@ export default function App() {
       <StatusBar style="light" />
       <View style={{ display: isActive ? 'none' : 'flex' }}>
         <View style={styles.buttonView}>
-          <Button onPress={() => { setRemainingTime(parseInt(newTime) * 60); keyboardHandler() }}> Minutos </Button>
-          <Button onPress={() => { setRemainingTime(parseInt(newTime)); keyboardHandler() }}> Segundos </Button>
+          <Button onPress={() => { setRemainingTime(newTime * 60); keyboardHandler() }}>Mins</Button>
+          <Button onPress={() => { setRemainingTime(newTime); keyboardHandler() }}>Secs</Button>
         </View>
         <View style={styles.timePickerContainer}>
-          <TextInput style={styles.input} keyboardType="number-pad" onChange={value => setNewTime(value)} />
+          <TextInput style={styles.input} keyboardType="number-pad" onChangeText={value => setNewTime(parseInt(value))} />
         </View>
       </View>
       <Texto style={[styles.activity, { display: isActive ? 'flex' : 'none' }]}>{type}</Texto>
       <Texto style={styles.timer}>{`${mins}:${secs}`}</Texto>
       <View style={styles.buttonView}>
-        <Button onPress={() => { toggle(); isActive ? playStartSound() : playStopSound() }} style={{ color: isActive ? "#FF0000" : "#00FF00" }}>{isActive ? 'Pausar' : 'Iniciar'}</Button>
-        <Button onPress={() => { reset(); playStopSound() }}>Resetar</Button>
+        <Button onPress={() => { toggle(); isActive ? playStartSound() : playStopSound() }} style={{ color: isActive ? "#FF0000" : "#00FF00" }}>{isActive ? 'Pause' : 'Start'}</Button>
+        <Button onPress={() => { reset(); playStopSound() }}>Reset</Button>
       </View>
     </SafeAreaView>
   );
