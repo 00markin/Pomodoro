@@ -19,14 +19,14 @@ This project was bootstrapped with Expo
 `npm start`
 
 ## To-Do List (as described in the test .pdf):
-- [ ] Um temporizador para demonstrar o tempo de duração da atividade e do
+- [x] Um temporizador para demonstrar o tempo de duração da atividade e do
 intervalo (deve haver um feedback visual para distinguir duração da atividade
 e duração do intervalo);
-- [ ] Um botão para pausar o temporizador;
-- [ ] Um botão para zerar o temporizador (lembrando que o ponto inicial do
+- [x] Um botão para pausar o temporizador;
+- [x] Um botão para zerar o temporizador (lembrando que o ponto inicial do
 temporizador são os 25 segundos).
 - [ ] Configuração de tempo personalizada com TimePicker (esse componente
 deve ser feito do 0, podendo utilizar lib auxiliar como moment).
-- [ ] Adicionar um gráfico que demonstra a redução do tempo;
+- [x] Adicionar um gráfico que demonstra a redução do tempo;
 - [ ] Adicionar um feedback sonoro para quando o tempo da atividade terminar;
 - [ ] Disponibilizar a página para utilização (deploy).
