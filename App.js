@@ -25,25 +25,25 @@ export default function App() {
   const [isActive, setIsActive] = useState(false);
   const [newTime, setNewTime] = useState(25);
   const [type, setType] = useState('Work');
-  const [startSound, setStartSound] = useState();
-  const [stopSound, setStopSound] = useState();
+  // const [startSound, setStartSound] = useState();
+  // const [stopSound, setStopSound] = useState();
   const { mins, secs } = getRemainingTime(remainingTime);
 
-  async function playStartSound() {
-    const { startFx } = await Audio.Sound.createAsync(
-      require('./assets/StartFx.mp3')
-    );
-    setStartSound(startFx);
-    await startFx.playAsync();
-  }
+  // async function playStartSound() {
+  //   const { startFx } = await Audio.Sound.createAsync(
+  //     require('./assets/StartFx.mp3')
+  //   );
+  //   setStartSound(startFx);
+  //   await startFx.playAsync();
+  // }
 
-  async function playStopSound() {
-    const { stopFx } = await Audio.Sound.createAsync(
-      require('./assets/StopFx.mp3')
-    );
-    setStopSound(stopFx);
-    await stopFx.playAsync();
-  }
+  // async function playStopSound() {
+  //   const { stopFx } = await Audio.Sound.createAsync(
+  //     require('./assets/StopFx.mp3')
+  //   );
+  //   setStopSound(stopFx);
+  //   await stopFx.playAsync();
+  // }
 
   // função para iniciar o timer
   const toggle = () => {
@@ -57,65 +57,69 @@ export default function App() {
     setIsActive(false);
   }
 
-  //função para parar o timer
-  const stop = () => {
-    setIsActive(false);
-    setRemainingTime(0);
-    playStopSound();
-  }
-
-  // função para mudar o tempo do timer
-  async function switchBetweenWorkAndRelax() {
+  // função para mudar o tipo do timer
+  // async function switchBetweenWorkAndRelax() {
+  function switchBetweenWorkAndRelax() {
     if (type === 'Work') {
-      await playStopSound();
+      // await playStopSound();
       setType('Relax');
       setRemainingTime(5);
-      await playStartSound();
+      // await playStartSound();
     } else {
-      await playStopSound();
+      // await playStopSound();
       setType('Work');
       setRemainingTime(newTime);
-      await playStartSound();
+      // await playStartSound();
     }
   }
 
-  // função para atualizar o tempo restante
-  useEffect(() => {
+  // função para mudar o tempo do timer
+  const atualizarTempo = () => {
     if (remainingTime === 0) {
       switchBetweenWorkAndRelax();
     }
     let interval = null;
     if (isActive) {
       interval = setInterval(() => {
-        setRemainingTime(remainingTime => remainingTime - 1);
+        if (remainingTime <= 0) {
+          clearInterval(interval);
+          switchBetweenWorkAndRelax();
+          return;
+        }
+        setRemainingTime((remainingTime) => remainingTime - 1);
       }, 1000);
-    } else if (!isActive && remainingTime !== 0) {
+    } else if (!isActive && remainingTime >= 0) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
+  }
+
+  // Hook para atualizar o tempo restante
+  useEffect(() => {
+    atualizarTempo();
   }, [isActive, remainingTime]);
 
   const keyboardHandler = () => {
     Keyboard.dismiss();
   }
 
-  //useEffect para o som de começo das atividades
-  useEffect(() => {
-    return startSound
-      ? () => {
-        startSound.unloadAsync();
-      }
-      : undefined;
-  }, [startSound]);
+  // //useEffect para o som de começo das atividades
+  // useEffect(() => {
+  //   return startSound
+  //     ? () => {
+  //       startSound.unloadAsync();
+  //     }
+  //     : undefined;
+  // }, [startSound]);
 
-  //useEffect para o som de fim das atividades
-  useEffect(() => {
-    return stopSound
-      ? () => {
-        stopSound.unloadAsync();
-      }
-      : undefined;
-  }, [stopSound]);
+  // //useEffect para o som de fim das atividades
+  // useEffect(() => {
+  //   return stopSound
+  //     ? () => {
+  //       stopSound.unloadAsync();
+  //     }
+  //     : undefined;
+  // }, [stopSound]);
 
   //carregando fonte externa
   const [fonteCarregada] = useFonts({
@@ -132,7 +136,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
-      <View style={{ display: isActive ? 'none' : 'flex' }}>
+      <View style={{ display: isActive ? 'none' : 'flex', alignItems: "center" }}>
         <View style={styles.buttonView}>
           <Button onPress={() => { setRemainingTime(newTime * 60); keyboardHandler() }}>Mins</Button>
           <Button onPress={() => { setRemainingTime(newTime); keyboardHandler() }}>Secs</Button>
@@ -144,8 +148,8 @@ export default function App() {
       <Texto style={[styles.activity, { display: isActive ? 'flex' : 'none' }]}>{type}</Texto>
       <Texto style={styles.timer}>{`${mins}:${secs}`}</Texto>
       <View style={styles.buttonView}>
-        <Button onPress={() => { toggle(); isActive ? playStartSound() : playStopSound() }} style={{ color: isActive ? "#FF0000" : "#00FF00" }}>{isActive ? 'Pause' : 'Start'}</Button>
-        <Button onPress={() => { reset(); playStopSound() }}>Reset</Button>
+        <Button onPress={() => { toggle(); {/* isActive ? playStartSound() : playStopSound() */} }} style={{ color: isActive ? "#FF0000" : "#00FF00" }}>{isActive ? 'Pause' : 'Start'}</Button>
+        <Button onPress={() => { reset(); {/* playStopSound() */}}}>Reset</Button>
       </View>
     </SafeAreaView>
   );

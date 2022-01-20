@@ -32,5 +32,5 @@ temporizador são os 25 segundos).
 - [x] Configuração de tempo personalizada com TimePicker (esse componente
 deve ser feito do 0, podendo utilizar lib auxiliar como moment).
 - [x] Adicionar um gráfico que demonstra a redução do tempo;
-- [ ] Adicionar um feedback sonoro para quando o tempo da atividade terminar;
+- [ ] Adicionar um feedback sonoro para quando o tempo da atividade terminar; (Expo não está conseguindo executar a ação)
 - [ ] Disponibilizar a página para utilização (deploy).
