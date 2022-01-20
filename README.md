@@ -33,4 +33,7 @@ temporizador são os 25 segundos).
 deve ser feito do 0, podendo utilizar lib auxiliar como moment).
 - [x] Adicionar um gráfico que demonstra a redução do tempo;
 - [ ] Adicionar um feedback sonoro para quando o tempo da atividade terminar; (Expo não está conseguindo executar a ação)
-- [ ] Disponibilizar a página para utilização (deploy).
+- [x] Disponibilizar a página para utilização (deploy).
+
+## Live Demo:
+[exp://exp.host/@mvmarcus/Pomodoro-timer](https://expo.io/@mvmarcus/Pomodoro-timer)

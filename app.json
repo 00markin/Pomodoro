@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Pomodoro Timer developed with React Native, DO NOT USE THIS AS PRODUCTION, it's full of comments, for study purpose only",
+    "githubUrl": "https://github.com/00markin/Pomodoro"
   }
 }
