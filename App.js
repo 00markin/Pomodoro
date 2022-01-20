@@ -55,6 +55,7 @@ export default function App() {
   const reset = () => {
     setRemainingTime(25);
     setIsActive(false);
+    setType('Work');
   }
 
   // função para mudar o tipo do timer
@@ -62,19 +63,21 @@ export default function App() {
   function switchBetweenWorkAndRelax() {
     if (type === 'Work') {
       // await playStopSound();
+      Vibrate();
       setType('Relax');
-      setRemainingTime(5);
+      setRemainingTime(parseInt(newTime/5));
       // await playStartSound();
     } else {
       // await playStopSound();
+      Vibrate();
       setType('Work');
       setRemainingTime(newTime);
       // await playStartSound();
     }
   }
 
-  // função para mudar o tempo do timer
-  const atualizarTempo = () => {
+  // Hook para atualizar o tempo restante
+  useEffect(() => {
     if (remainingTime === 0) {
       switchBetweenWorkAndRelax();
     }
@@ -92,11 +95,6 @@ export default function App() {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }
-
-  // Hook para atualizar o tempo restante
-  useEffect(() => {
-    atualizarTempo();
   }, [isActive, remainingTime]);
 
   const keyboardHandler = () => {
@@ -194,6 +192,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderColor: "#f5af26",
+    marginTop: 30,
     borderRadius: 10,
     borderWidth: 3,
     width: screen.width / 2,
