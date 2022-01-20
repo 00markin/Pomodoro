@@ -6,6 +6,7 @@ This project was bootstrapped with Expo
 
 ## Disclaimer:
 ### Do not use this version in Production, It's full of comments (Pt-Br) to be easier the evaluation.
+#### Android Build is still queued, use the expo version while it's not completed
 
 ---
 
